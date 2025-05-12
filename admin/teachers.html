@@ -208,9 +208,9 @@ button.delete:hover {
 </head>
 <body>
   <h1>Teachers</h1>
-  <!--div class="save-container" >
+  <div class="save-container" >
       <button id="save">Save</button>
-    </div-->
+    </div>
   <form id="teacherForm" >
     <div class="table-container">
     <table class="p-table">
@@ -504,7 +504,43 @@ button.delete:hover {
     function closeModal() {
       document.getElementById("modal").style = "display: none";
     }
+
+
+
+      save.onclick = async e=>{
+    let rows = Array.from(document.querySelectorAll(".entry"));
+    rows.forEach(row=>{
+      let name = row.querySelector(".name").value;
+      let subject = row.querySelector(".subjectSelect");
+    let optionElms = Array.from(subject.selectedOptions);
+    let subjDict  = {};
+    let inTable = subject.parentElement.querySelector("table");
+    let tBody = inTable.querySelector("tbody");
     
+    optionElms.forEach(opt => {
+      let key = opt.parentElement.label;
+      let val = opt.textContent;
+      if (subjDict[key])
+      subjDict[key].push(val);
+      else subjDict[key] = [val];
+      
+    })
+     let username = row.querySelector(".username").value;
+     let psw = row.querySelector(".password").value;
+      
+      if (!username) return;
+      let teacher = {
+        name: name,
+        load: subjDict,
+        username: username,
+        psw: psw
+      }
+      teachers[username] = teacher;
+    })
+    await setDoc(teachersRef, teachers);
+    alert("saved!");
+  }
+  
   </script>
 </body>
 </html>
