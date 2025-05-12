@@ -320,39 +320,7 @@ button.delete:hover {
     }
   }
   
- /* save.onclick = async e=>{
-    let rows = Array.from(document.querySelectorAll(".entry"));
-    rows.forEach(row=>{
-      let name = row.querySelector(".name").value;
-      let subject = row.querySelector(".subjectSelect");
-    let optionElms = Array.from(subject.selectedOptions);
-    let subjDict  = {};
-    let inTable = subject.parentElement.querySelector("table");
-    let tBody = inTable.querySelector("tbody");
-    
-    optionElms.forEach(opt => {
-      let key = opt.parentElement.label;
-      let val = opt.textContent;
-      if (subjDict[key])
-      subjDict[key].push(val);
-      else subjDict[key] = [val];
-      
-    })
-     let username = row.querySelector(".username").value;
-     let psw = row.querySelector(".password").value;
-      
-      if (!username) return;
-      let teacher = {
-        name: name,
-        load: subjDict,
-        username: username,
-        psw: psw
-      }
-      teachers[username] = teacher;
-    })
-    await setDoc(teachersRef, teachers);
-    alert("saved!");
-  }*/
+
   
   usernameIn.oninput = e=>{
     let val = usernameIn.value;
@@ -364,7 +332,7 @@ button.delete:hover {
    async function addTeacher(){
      let teacher = {
       name: "",
-      psw: "1234",
+      psw: "123456",
       username: "",
       load: {}
     }
@@ -377,7 +345,7 @@ button.delete:hover {
         let username = usernameIn.value;
         if (!username) return;
         if (!name) return;
-        createUserWithEmailAndPassword(auth, `${username}@${schoolId}.com`, "123456").
+        createUserWithEmailAndPassword(auth, `${username}@teacher${schoolId}.com`, "123456").
         then(userCred=>{
           resolve({name, username});
           addTeacher();
