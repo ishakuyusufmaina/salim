@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Admin</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f6f9;
+    color: #333;
+    padding: 20px;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #3f51b5;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #3f51b5;
+  }
+
+  #code {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #d32f2f;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #388e3c;
+  }
+
+  a {
+    text-decoration: none;
+    color: #1a237e;
+    font-weight: 500;
+    display: block;
+    margin-top: 10px;
+  }
+
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.2s;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+  }
+
+  h2 {
+    color: #303f9f;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
+  
+  
+  p {
+    text-align: right;
+    color: teal;
+  }
+  hr {
+    border: 0;
+    height: 4px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(200, 200, 200, 0.75), rgba(0, 0, 0, 0));
+}
+ 
+
+  #signout {
+   // background-color: #f44336; /* Red */
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    font-size: 16px;
+    top:0;
+    border-radius: 8px;
+    cursor: pointer;
+    float: right;
+   // position:absolute;
+   // right: 0;
+  //  width:8px;
+//    height: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  #signout:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+  }
+
+  #signout:active {
+    transform: scale(0.98);
+  }
+</style>
+
+
+</head>
+<body>
+
+  <header>
+    
+    <span id="sess">session/term not initialized</span>
+    <div id="date"></div>
+  </header>
+
+  <h1>Admin  </h1>
+
+  <div class="card-container">
+    <div class="card">
+      Authorization code: <span id="code"></span>
+      <button id="generate">Generate new</button>
+        
+    </div>
+
+    <div class="card">
+      <h2>Attendance</h2>
+      <a href="#">Teach and Sign</a>
+      <a href="#">Student Attendance</a>
+      <hr>
+      <p>Locked</p>
+    </div>
+    
+    <div class="card">
+      <h2>Academic Performance</h2>
+      <a href="#">View and Publish Report Cards</a>
+      <a href="#">Terminal Report Card Checker</a>
+      <hr>
+      <p>Locked</p>
+    </div>
+
+    <div class="card">
+      <h2>Academic Session</h2>
+      <a href="session.html">Manage Session</a>
+    </div>
+
+    <div class="card">
+      <h2>School Sections</h2>
+      <a href="section.html">Manage Sections</a>
+    </div>
+
+    <div class="card">
+      <h2>Subjects</h2>
+      <a href="subjects.html">Manage Subjects</a>
+    </div>
+
+    <div class="card">
+      <h2>Teachers</h2>
+      <a href="teachers.html">Manage Teachers</a>
+    </div>
+
+    <div class="card">
+      <h2>Students</h2>
+      <a href="students.html">Manage Students</a>
+    </div>
+
+    <div class="card">
+      <h2>Form Masters</h2>
+      <a href="formMaster.html">Assign Form Masters</a>
+    </div>
+
+    <div class="card">
+      <h2>Manage Admins</h2>
+      <a href="#">Admin Settings</a>
+      <hr>
+      <p>Locked</p>
+    </div>
+
+    <div class="card">
+      <h2>Guardians</h2>
+      <p>(Coming soon)</p>
+    </div>
+    <button id="signout">sign out</button>
+
+  </div>
+   <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
+  import {getFirestore, doc, setDoc, getDoc} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+  import {getAuth, signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+     // import {getDatabase, set, ref, onValue, child, get } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      const firebaseConfig = {
+  apiKey: "AIzaSyCm_DSZaYVQCt0ubBwRkE9nOTryJayxH0w",
+  authDomain: "school-in-the-box.firebaseapp.com",
+  projectId: "school-in-the-box",
+  storageBucket: "school-in-the-box.firebasestorage.app",
+  messagingSenderId: "596350496353",
+  appId: "1:596350496353:web:84c66c351700ddf0824420",
+  measurementId: "G-3MGCDH4FRF"
+};
+
+  
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const auth = getAuth(app);
+    const db = getFirestore(app);
+const schoolId= "capital";
+  const terms = ["first term", "second term", "third term"];
+  
+   var sessions = [];
+  
+  let sessionsRef = doc(db, schoolId, "sessions");
+  let sessionsDoc = await getDoc(sessionsRef);
+    if (sessionsDoc.exists()){
+    let sessions =  sessionsDoc.data().sessions;
+     sessions= sessions.sort((a, b)=>b.no - a.no);
+    sess.innerHTML = sessions[0].year + ", " +terms[sessions[0].term]
+        }
+  
+  
+  let d = new Date();
+  let year = d.getFullYear();
+  let month = d.getMonth() + 1;
+  let day = d.getDate();
+  let sec = d.getSeconds()+1;
+  let min = d.getMinutes()+1;
+  let h = d.getHours()+1;
+  //time.innerHTML = `${h} : {}{
+  date.innerHTML = `${day}/${month}/${year}`;
+
+  function randint(low, high) {
+    let num = Math.random();
+    num = num*high + 1;
+    num = Math.floor(num);
+    if(num < low)
+    num =  randint(low, high);
+    return num
+}
+  
+  function generate4N(){
+    let n1 = randint(0,9);
+    let n2 = randint(0,9);
+    let n3 = randint(0,9);
+    let n4 = randint(0,9);
+    return `${n1}${n2}${n3}${n4}`;
+  }
+    generate.onclick = e=>{
+      code.innerHTML = generate4N();
+    }
+  signout.onclick = e=>{
+    window.location.href = "../signin.html";
+  }
+  </script>
+</body>
+                                              </html>
+        
