@@ -144,7 +144,7 @@ footer small {
 
   <div class="card">
     <h2>Sign In</h2>
-    <input type="email" id="email" placeholder="Email" required />
+    <input type="email" id="email" placeholder="Username" required />
     <input type="password" id="password" placeholder="Password" required />
     <button id="loginBtn" onclick="signIn()">Login</button>
   </div>
@@ -179,7 +179,7 @@ footer small {
   loginBtn.onclick = signIn;
 
     function signIn() {
-      const email = document.getElementById("email").value;
+      const email = document.getElementById("email").value + ".salim";
       const password = document.getElementById("password").value;
 
       signInWithEmailAndPassword(auth, email, password)
