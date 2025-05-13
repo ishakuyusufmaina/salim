@@ -277,7 +277,8 @@ const schoolId= "capital";
           setTimeout(e=>window.history.back(), 1000);
         })
         .catch((error) => {
-          messageEl.textContent = `Error: ${error.message}`;
+          messageEl.textContent = `Error: ${error.code}`;
+          setTimeout(e=>messageEl.textContent = "", 2500)
         });
     }
   
