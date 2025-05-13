@@ -16,18 +16,26 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f4f6f9;
     color: #333;
+    //padding: 20px;
+  }
+  main {
     padding: 20px;
   }
 
   header {
-    display: flex;
+  //  display: flex;
     justify-content: space-between;
     align-items: center;
     background: #3f51b5;
     color: #fff;
     padding: 15px 20px;
-    border-radius: 10px;
+    //border-radius: 10px;
     margin-bottom: 30px;
+  
+    position: sticky;
+    top:0;
+    z-index: 99;
+    min-height: 80px;
   }
 
   h1 {
@@ -112,12 +120,10 @@
     top:0;
     border-radius: 8px;
     cursor: pointer;
-    float: right;
-   // position:absolute;
-   // right: 0;
-  //  width:8px;
-//    height: 8px;
+    //float: right;
+ 
     transition: background-color 0.3s ease, transform 0.2s ease;
+    
   }
 
   #signout:hover {
@@ -128,18 +134,122 @@
   #signout:active {
     transform: scale(0.98);
   }
+  
+
+
+   
+    .menu-container.show {
+        transition: transform 0.2s ease-out;
+        transform: scaleX(100%);
+        
+    }
+
+#menu {
+        position: absolute;
+        right:0;
+        top: 0;
+        background: none; // inherit;
+        color: inherit;
+        border: none;
+        font-size: 40px;
+    font-weight: bold;
+  z-index: 101;
+    }
+  
+  
+  
+  .menu-container {
+    max-height: 100vh;
+        position: absolute;
+        right: 0;
+        z-index: 110;
+        transform: scaleX(0);
+        text-align: left;
+        top: 0:
+    overflow: auto;
+  background-color: inherit; // #1e1e1e;
+  color: #ffffff;
+  padding: 20px;
+  width: 220px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: auto;
+  }
+
+.menu-container button#close {
+  background: transparent;
+  color: #ffffff;
+  border: none;
+  font-size: 18px;
+  float: right;
+  cursor: pointer;
+}
+
+.menu-container hr {
+  border: 0;
+  height: 1px;
+  background:  #444;
+  margin: 10px 0;
+}
+
+.menu-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-container li {
+  overflow: auto;
+  transition: background 0.3s, transform 0.2s;
+  margin: 12px 0;
+  
+}
+
+.menu-container a {
+  color: #80cbc4;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.menu-container a:hover {
+  color: #4db6ac;
+}
+
+#signout {
+  cursor: pointer;
+  padding: 10px 20px;
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+
+}
 </style>
 
 
 </head>
 <body>
-
+      
   <header>
-    
+    <button id="menu">&#9776;</button>
+     <div class="menu-container">
+            <button id="close">X</button> Menu
+            <hr>
+            <ul>
+                <li><a href="../changePsw.html">Change password </a></li>
+                <li id="signout">Logout <span id="username"></span></li>
+            </ul>
+        </div>
     <span id="sess">session/term not initialized</span>
     <div id="date"></div>
   </header>
-
+  <main>
   <h1>Admin  </h1>
 
   <div class="card-container">
@@ -206,9 +316,10 @@
       <h2>Guardians</h2>
       <p>(Coming soon)</p>
     </div>
-    <button id="signout">sign out</button>
+    <!--button id="signout">sign out</button-->
 
   </div>
+</main>
    <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
@@ -230,7 +341,7 @@
       const analytics = getAnalytics(app);
       const auth = getAuth(app);
     const db = getFirestore(app);
-const schoolId= "salim";
+const schoolId= "capital";
   const terms = ["first term", "second term", "third term"];
   
    var sessions = [];
@@ -276,7 +387,17 @@ const schoolId= "salim";
   signout.onclick = e=>{
     window.location.href = "../signin.html";
   }
+  
+  
+  document.getElementById("close").onclick = _ => document.querySelector(".menu-container").classList.remove("show");
+        menu.onclick = _ => document.querySelector(".menu-container").classList.add("show");
+
+  document.body.onclick = e =>{
+    
+    if (e.target != menu )
+    document.querySelector(".menu-container").classList.remove("show");
+
+  }
   </script>
 </body>
-                                              </html>
-        
+</html>
