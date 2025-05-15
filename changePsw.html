@@ -251,7 +251,7 @@ footer small {
       const analytics = getAnalytics(app);
       const auth = getAuth(app);
     const db = getFirestore(app);
-const schoolId= "capital";
+const schoolId= "school";
 
  // let text = "mbhg@teaa.hhh"
   let reg = /@.*/
@@ -277,8 +277,7 @@ const schoolId= "capital";
           setTimeout(e=>window.history.back(), 1000);
         })
         .catch((error) => {
-          messageEl.textContent = `Error: ${error.code}`;
-          setTimeout(e=>messageEl.textContent = "", 2500)
+          messageEl.textContent = `Error: ${error.message}`;
         });
     }
   
