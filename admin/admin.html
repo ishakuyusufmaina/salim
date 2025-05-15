@@ -328,7 +328,24 @@
   </div>
 </main>
   <script>
-    
+    const adminFunctions = [
+    "teachers",
+    "students",
+    "rc",
+    "admins",
+    "fm",
+    "session",
+    "section",
+    "subjects",
+    "auth",
+    "monTAS",
+    "monSA"
+  ];
+    adminFunctions.forEach(fx=>{
+  let elm = document.querySelector("."+fx);
+  if (elm) elm.style = "display: none;"
+  
+})
   </script>
    <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
@@ -369,26 +386,10 @@ const schoolId= "salim";
     
 
 
-const adminFunctions = [
-    "teachers",
-    "students",
-    "rc",
-    "admins",
-    "fm",
-    "session",
-    "section",
-    "subjects",
-    "auth",
-    "monTAS",
-    "monSA"
-  ];
+
      
   
-adminFunctions.forEach(fx=>{
-  let elm = document.querySelector("."+fx);
-  if (elm) elm.style = "display: none;"
-  
-})
+
   let d = new Date();
   let year = d.getFullYear();
   let month = d.getMonth() + 1;
