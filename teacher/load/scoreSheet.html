@@ -182,16 +182,15 @@
       
      Object.keys(students).forEach((key, i)=>{
        let student = students[key];
+       student.subjects ??={};
+       student.subjects[subjK] ??= [{}, {}, {}];
           const row = document.createElement('tr');
        let name = student.name;
        let [test, exam]=[0,0];
-       try {
          
-       test = student.subjects[subj]? student.subjects[subjK][termIndex].test : 0;
-       exam = student.subjects[subj]? student.subjects[subjK][termIndex].exam : 0;
-       } catch (e){
-        
-       }
+       test = student.subjects[subjK][termIndex].test ?? 0;
+       exam = student.subjects[subjK][termIndex].exam ?? 0;
+       
     row.classList.add("record");
     let sn= container.children.length;
       row.innerHTML = `
@@ -226,6 +225,8 @@
          let exam = Number(examInp.value);
          let total = test + exam;
          totalElm.innerHTML = total;
+           student.subjects[subjK][termIndex].test = test;;
+           student.subjects[subjK][termIndex].exam = exam;
        }
        });
          
@@ -289,39 +290,15 @@
 async function  saveScores(){
   let subjK = key(subj);
   if (!subjK) return;
+
   let clas = key(cls);
     let session = key(ses.year + terms[ses.term]);
     if (!(clas && session)) return null;
    if (!students) return;
  
-  let termIndex = ses.term;
-    let records = Array.from(document.querySelectorAll(".record"));
-    records.forEach((record, i)=>{
-      let stdId = "std"+i;
-      let name = record.children[1].innerHTML;
-      let test = record.children[2].querySelector("input").value;
-      let exam = record.children[3].querySelector("input").value;
-      console.log(name, test, exam);
-      //students[i].name = name;
-      try {
-      students[i].subjects[subjK] ??= [{}, {}, {}];
-      } catch(e){
-        students[stdId].subjects = {};
-        students[stdId].subjects[subjK] = [{}, {}, {}];
-
-      }
-      students[stdId].subjects[subjK][termIndex] = {
-        name: subj,
-        test: test, 
-        exam: exam
-      };
-      let score = students[stdId].subjects[subjK][termIndex];
-     // alert(score.test);
-      
-    })
-  console.log(JSON.stringify(students));
   
  let stdsRef = doc(db, schoolId, session, clas, "students");
+ 
   await setDoc(stdsRef, students);
  // alert("save!");
   }
