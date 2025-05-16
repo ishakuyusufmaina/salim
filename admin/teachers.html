@@ -3,21 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   <title>Teachers - Name, Username, Password</title>
   <style>
   *{
     box-sizing: border-box;
   }
     body {
-      background-color: #121212;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
+      background-color: #f4f7fa;
+        font-family: Arial, sans-serif;
       padding: 20px;
     }
   select {
-    background-color: #121212;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
+       font-family: Arial, sans-serif;
   }
 
     form {
@@ -29,8 +28,7 @@
       padding: 8px;
       border: 1px solid #333;
       border-radius: 5px;
-      background-color: #1e1e1e;
-      color: #fff;
+  
     }
 
     
@@ -48,8 +46,7 @@
     }
  h1, .save-container {
     display: inline-block;
-    
-  }
+ }
   .save-container {
     float: right;
   }
@@ -203,10 +200,17 @@ button.delete:hover {
     color: red;
 
       }
+  
+  a {
+    font-size: 1.2rem;
+    color: #4a90e2;
+  }
 
   </style>
 </head>
 <body>
+  <a href="admin.html"><i class="fas fa-home"></i></a>
+
   <h1>Teachers</h1>
   <div class="save-container" >
       <button id="save">Save</button>
@@ -465,7 +469,7 @@ button.delete:hover {
             
           </td>
      
-          <td><input disabled value="${username}" class="username" name="username" placeholder="Username"></td>
+          <td class="username"><input disabled value="${username}" class="username" name="username" placeholder="Username"></td>
          
           <!--td><input disabled class="password" name="password" value="${psw? psw : 123456}" placeholder="Default Password"></td-->
           <td><button class="delete" type="button" onclick="deleteField(this)">remove</button></td>
@@ -534,6 +538,9 @@ button.delete:hover {
 
     function deleteField(btn) {
       const row = btn.closest('tr');
+      let username = row.querySelector(".username > input").value;
+      delete teachers[username];
+      //alert(teachers[username]);
       row.remove();
     }
   
