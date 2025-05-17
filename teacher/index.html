@@ -194,22 +194,38 @@
     transition: background 0.3s ease;
 
 }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+  }
+
 </style>
 
 </head>
 <body>
   <header>
+    <button id="signout1">Logout</button>
+
     <button id="menu">&#9776;</button>
      <div class="menu-container">
             <button id="close">X</button> Menu
             <hr>
             <ul>
+              <li></li>
               <li id="switch">Switch <span>Account</span></li>
               <li id="signout">Logout <span id="username"></span></li>
               <li><a href="../changePsw.html">Change password </a></li>
             </ul>
         </div>
-    <span id="session">session/term not initialized</span>
+    <div id="session">session/term not initialized</div>
     <div id="date"></div>
   </header>
   <h1>
@@ -363,6 +379,7 @@ let teachersRef = doc(db, schoolId, "teachers");
   document.getElementById("switch").onclick = e=> {
       window.location.href = "../admin/admin.html";
     }
+  signout1.onclick = e=> signOut(auth);
   </script>
 </body>
 </html>
