@@ -238,6 +238,7 @@
 <body>
       
   <header>
+    <button id="signout1">Logout</button>
     <button id="menu">&#9776;</button>
      <div class="menu-container">
             <button id="close">X</button> Menu
@@ -278,7 +279,7 @@
       <h2>Academic Performance</h2>
       <a href="reportCards.html">Report Cards</a>
       <a href="reportOverview.html">Overview</a>
-    
+     
     </div>
       
     
@@ -326,26 +327,6 @@
 
   </div>
 </main>
-  <script>
-    const adminFunctions = [
-    "teachers",
-    "students",
-    "rc",
-    "admins",
-    "fm",
-    "session",
-    "section",
-    "subjects",
-    "auth",
-    "monTAS",
-    "monSA"
-  ];
-    adminFunctions.forEach(fx=>{
-  let elm = document.querySelector("."+fx);
-  if (elm) elm.style = "display: none;"
-  
-})
-  </script>
    <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
@@ -385,10 +366,25 @@ const schoolId= "salim";
     
 
 
-
-     
+const adminFunctions = [
+    "teachers",
+    "students",
+    "rc",
+    "admins",
+    "fm",
+    "session",
+    "section",
+    "subjects",
+    "auth",
+    "monTAS",
+    "monSA"
+  ];
   
-
+adminFunctions.forEach(fx=>{
+  let elm = document.querySelector("."+fx);
+  if (elm) elm.style = "display: none;"
+  
+})
   let d = new Date();
   let year = d.getFullYear();
   let month = d.getMonth() + 1;
@@ -464,6 +460,9 @@ const schoolId= "salim";
     if (!user){
       window.location.href = "../signin.html";
       return;
+    }
+    signout1.onclick = e=>{
+      signOut(auth);
     }
     let name = user.displayName;
     if (!name){
