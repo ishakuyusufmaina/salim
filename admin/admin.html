@@ -112,27 +112,14 @@
 }
  
 
-  #signout {
-   // background-color: #f44336; /* Red */
-    color: white;
-    border: none;
-    padding: 14px 20px;
-    font-size: 16px;
-    top:0;
-    border-radius: 8px;
-    cursor: pointer;
-    //float: right;
  
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    
-  }
 
   #signout:hover {
     background-color: #d32f2f;
     transform: scale(1.05);
   }
 
-  #signout:active {
+  #signout:active, #switch:active {
     transform:scale(0.98);
   }
   
@@ -218,7 +205,16 @@
   color: #4db6ac;
 }
 
-#signout {
+#signout, #switch {
+  color: white;
+    border: none;
+    padding: 14px 20px;
+    font-size: 16px;
+    top:0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
   cursor: pointer;
   padding: 10px 20px;
     background-color: #4caf50;
@@ -244,8 +240,10 @@
             <button id="close">X</button> Menu
             <hr>
             <ul>
-                <li><a href="../changePsw.html">Change password </a></li>
-                <li id="signout">Logout <span id="username"></span></li>
+              <li></li>
+             <li id="switch">Switch <span>Account</span></li>
+              <li id="signout">Logout <span id="username"></span></li>
+              <li><a href="../changePsw.html">Change password </a></li>
             </ul>
      </div>
     <div id="sess">session/term not initialized</div>
@@ -463,6 +461,9 @@ adminFunctions.forEach(fx=>{
     }
     signout1.onclick = e=>{
       signOut(auth);
+    }
+    document.getElementById("switch").onclick = e=> {
+      window.location.href = "../teacher/index.html";
     }
     let name = user.displayName;
     if (!name){
