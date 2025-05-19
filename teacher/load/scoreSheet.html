@@ -184,6 +184,10 @@
        let student = students[key];
        student.subjects ??={};
        student.subjects[subjK] ??= [{}, {}, {}];
+       student.subjects[subjK][termIndex].name ??= subj;
+       student.subjects[subjK][termIndex].test ??= 0;
+       student.subjects[subjK][termIndex].exam ??= 0;
+       
           const row = document.createElement('tr');
        let name = student.name;
        let [test, exam]=[0,0];
@@ -228,6 +232,9 @@
            student.subjects[subjK][termIndex].test = test;;
            student.subjects[subjK][termIndex].exam = exam;
            student.subjects[subjK][termIndex].name = subj;
+           
+
+           
        }
        });
          
