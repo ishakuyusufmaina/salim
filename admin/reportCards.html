@@ -8,10 +8,10 @@
   <title>Position</title>
 </head>
 <body>
-  <h1>
+  <h1 class="no-print">
     Report Cards
   </h1>
-     <div class="select-container">
+     <div class="select-container no-print">
    <select id="sessionSelect">
     <option> -select session- </option>
   </select>
@@ -22,11 +22,15 @@
   
   
   </div>
+  
   <div id="container">
     
   </div>
   
-  
+
+  <div class="no-print">
+    <button id="print">Download</button>
+  </div>
    <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
@@ -275,7 +279,7 @@ container.append(hr, wrapper);
   
   
   
-  
+  print.onclick = e=>window.print();
   
   </script>
   
@@ -413,7 +417,9 @@ text-align: center;
     hr {
       page-break-after: always;
     }
-    
+    .no-print {
+      display: none;
+    }
   }
   </style>
 </body>
