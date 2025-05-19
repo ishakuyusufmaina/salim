@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"> 
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -141,7 +141,7 @@ button.delete:hover {
   border-radius: 10px;
   padding: 2rem;
   background: #fff;
-  box-shadow: 0 10px 25px rgba( 0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   min-width: 300px;
   max-width: 90%;
 }
@@ -350,7 +350,8 @@ button.delete:hover {
       else subjDict[key] = [val];
       
     })
-     let username = row.querySelector(".username").value;
+     let username = row.querySelector(".username > input").value;
+      //alert(username)
      //let psw = row.querySelector(".password").value;
       
       if (!username) return;
@@ -361,6 +362,7 @@ button.delete:hover {
       }
       teachers[username] = teacher;
     })
+    //alert(JSON.stringify(teachers.sheriff))
     save.innerHTML = "Saving..";
     await setDoc(teachersRef, teachers);
     save.innerHTML = "Saved!";
@@ -451,9 +453,10 @@ button.delete:hover {
       let name = teacher.name;
       let psw = teacher.psw;
       let username = teacher.username;
+     
       row.innerHTML = `
        
-          <td><input type="text" class="name" value="${name}" name="name" placeholder="Name"></td>
+          <td><input type="text" disabled class="name" value="${name}" name="name" placeholder="Name"></td>
        <td class="subject">
           <table class="cell-table">
               <tr>
@@ -476,6 +479,7 @@ button.delete:hover {
           `;
 
       container.appendChild(row);
+       
       row.querySelector(".delete").onclick = e=>deleteField(e.target);
       let subject = row.querySelector(".subjectSelect");
       subjectDict.forEach((classes, subj)=>{
@@ -559,3 +563,4 @@ button.delete:hover {
   </script>
 </body>
 </html>
+ 
