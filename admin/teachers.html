@@ -299,7 +299,7 @@ button.delete:hover {
   let sectionRef = doc(db, schoolId, "section");
   let sectionDoc = await getDoc(sectionRef);
   var subjectDict = new Map();
-  const teachers = {};
+  var teachers = {};
   
   
   if (sectionDoc.exists()){
@@ -317,7 +317,7 @@ button.delete:hover {
      else
       subjectDict.set(subject, classes);
       
-      console.log(subject, subjectDict.get(subject));
+      //console.log(subject, subjectDict.get(subject));
     })
   }
   //console.log(JSON.stringify(subjectDict.get(""));
@@ -325,44 +325,20 @@ button.delete:hover {
   
   
   if (teachersDoc.exists()){
-    //teachers = teachersDoc.data();
-    for (const username in teachersDoc.data()){
-      teachers[username] = teachersDoc.data()[username]
+    teachers = teachersDoc.data();
+    for (const username in teachers){
+     //teachers[username] = teachersDoc.data()[username]
       addField(teachers[username]);
+      console.log(JSON.stringify(teachers[username].load))
+      let loadSelect = document.querySelector(`select[data-username="${username}"]`);
+      loadSelect.onchange = e=>{
+        console.log(e.target.value);
+      }
     }
   }
   
   save.onclick = async e=>{
-    let rows = Array.from(document.querySelectorAll(".entry"));
-    rows.forEach(row=>{
-      let name = row.querySelector(".name").value;
-      let subject = row.querySelector(".subjectSelect");
-    let optionElms = Array.from(subject.selectedOptions);
-    let subjDict  = {};
-    let inTable = subject.parentElement.querySelector("table");
-    let tBody = inTable.querySelector("tbody");
     
-    optionElms.forEach(opt => {
-      let key = opt.parentElement.label;
-      let val = opt.textContent;
-      if (subjDict[key])
-      subjDict[key].push(val);
-      else subjDict[key] = [val];
-      
-    })
-     let username = row.querySelector(".username > input").value;
-      //alert(username)
-     //let psw = row.querySelector(".password").value;
-      
-      if (!username) return;
-      let teacher = {
-        name: name,
-        load: subjDict,
-        username: username
-      }
-      teachers[username] = teacher;
-    })
-    //alert(JSON.stringify(teachers.sheriff))
     save.innerHTML = "Saving..";
     await setDoc(teachersRef, teachers);
     save.innerHTML = "Saved!";
@@ -456,7 +432,7 @@ button.delete:hover {
      
       row.innerHTML = `
        
-          <td><input type="text" disabled class="name" value="${name}" name="name" placeholder="Name"></td>
+          <td><input type="text" class="name" value="${name}" name="name" placeholder="Name"></td>
        <td class="subject">
           <table class="cell-table">
               <tr>
@@ -466,7 +442,7 @@ button.delete:hover {
 
               </tbody>
             </table>
-            <select multiple class="subjectSelect">
+            <select data-username="${username}" multiple class="subjectSelect">
                
             </select>
             
@@ -479,10 +455,13 @@ button.delete:hover {
           `;
 
       container.appendChild(row);
+      
        
       row.querySelector(".delete").onclick = e=>deleteField(e.target);
+      row.querySelector(".name").oninput = e=> teachers[username].name = e.target.value;
       let subject = row.querySelector(".subjectSelect");
       subjectDict.forEach((classes, subj)=>{
+        
         if (teacher.load[subj]){
           let intbody = row.querySelector("table>tbody");
         intbody.innerHTML += `
@@ -498,47 +477,56 @@ button.delete:hover {
           let opt = document.createElement("option");
           opt.innerHTML = clas;
           optGroup.append(opt);
+          
           try {
           if (teacher.load[subj].includes(clas)){
             let intbody = subject.parentElement.querySelector("table>tbody");
             
            let kSubj = subj.replaceAll(" ", "");
             let subjRow = intbody.getElementsByClassName(kSubj);
-           console.log(subjRow[0]);
+        //   console.log(subjRow[0]);
             
            // inrow.lastElementChild.innerHTML += ", "+clas;
            opt.selected = true;
           }
-          } catch (e){console.log(teacher.name, "is not taking", subj);}
+          } catch (e){
+            //console.log(teacher.name, "is not taking", subj);
+          }
+          
+          
         });
         subject.append(optGroup);
+        
       });
-      subject.onchange = e =>{
-    let optionElms = Array.from(subject.selectedOptions);
-    let subjDict  = new Map();
+      
+      subject.addEventListener("change", e =>{
+    
+        let subjDict  = new Map();
     let inTable = e.target.parentElement.querySelector("table");
     let tBody = inTable.querySelector("tbody");
-    
+    let un = subject.getAttribute("data-username");
+    let optionElms = Array.from(subject.selectedOptions);
     optionElms.map(opt => {
       let key = opt.parentElement.label;
       let val = opt.textContent;
       if (subjDict.has(key))
-      subjDict.get(key).push(val);
+     subjDict.get(key).push(val);
       else subjDict.set(key, [val]);
       
     })
     tBody.innerHTML = "";
       subjDict.forEach((val, key)=>{
+        teachers[un].load[key] = val;
         tBody.innerHTML +=`
           <tr>
                 <td>${key}</td>
                 <td>${val.toString().replaceAll(",", ", ")}</td>
            </tr>
         `;
-      console.log(key, val);
+               
     });
-  }
-    }
+  });
+       }
 
     function deleteField(btn) {
       const row = btn.closest('tr');
@@ -563,4 +551,3 @@ button.delete:hover {
   </script>
 </body>
 </html>
- 
