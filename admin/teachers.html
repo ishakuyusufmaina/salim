@@ -300,7 +300,7 @@ button.delete:hover {
   let sectionDoc = await getDoc(sectionRef);
   var subjectDict = new Map();
   var teachers = {};
-  
+  let subjs = [];
   
   if (sectionDoc.exists()){
   let sections = sectionDoc.data();
@@ -308,12 +308,16 @@ button.delete:hover {
     let section = sections[key];
     //console.log(section.classes)
     let subjects = section.subjects;
+    
     let classes = section.classes;
+      
     subjects.forEach(subject=>{
+      if (!subjs.includes(subject))
+      subjs.push(subject)
      // let classet = subjectDict.get(subject);
      // console.log(subject);
       if (subjectDict.has(subject))
-      subjectDict.get(subject).concat(classes);
+      subjectDict.set(subject, subjectDict.get(subject).concat(classes));
      else
       subjectDict.set(subject, classes);
       
@@ -328,7 +332,14 @@ button.delete:hover {
     teachers = teachersDoc.data();
     for (const username in teachers){
      //teachers[username] = teachersDoc.data()[username]
-      addField(teachers[username]);
+      let teacher = teachers[username];
+      teacher.load ??= {};
+      subjs.forEach(subj =>{
+        teacher.load[subj] ??=[];
+        teacher.load[subj] = teacher.load[subj].sort();
+      })
+            
+      addField(teacher);
       console.log(JSON.stringify(teachers[username].load))
       let loadSelect = document.querySelector(`select[data-username="${username}"]`);
       loadSelect.onchange = e=>{
@@ -432,7 +443,7 @@ button.delete:hover {
      
       row.innerHTML = `
        
-          <td><input type="text" class="name" value="${name}" name="name" placeholder="Name"></td>
+          <td><input type="text" disabled class="name" value="${name}" name="name" placeholder="Name"></td>
        <td class="subject">
           <table class="cell-table">
               <tr>
@@ -455,14 +466,12 @@ button.delete:hover {
           `;
 
       container.appendChild(row);
-      
        
       row.querySelector(".delete").onclick = e=>deleteField(e.target);
-      row.querySelector(".name").oninput = e=> teachers[username].name = e.target.value;
       let subject = row.querySelector(".subjectSelect");
       subjectDict.forEach((classes, subj)=>{
         
-        if (teacher.load[subj]){
+        if (teacher.load[subj].length){
           let intbody = row.querySelector("table>tbody");
         intbody.innerHTML += `
         <tr>
@@ -484,9 +493,7 @@ button.delete:hover {
             
            let kSubj = subj.replaceAll(" ", "");
             let subjRow = intbody.getElementsByClassName(kSubj);
-        //   console.log(subjRow[0]);
-            
-           // inrow.lastElementChild.innerHTML += ", "+clas;
+       
            opt.selected = true;
           }
           } catch (e){
@@ -506,17 +513,20 @@ button.delete:hover {
     let tBody = inTable.querySelector("tbody");
     let un = subject.getAttribute("data-username");
     let optionElms = Array.from(subject.selectedOptions);
-    optionElms.map(opt => {
+    optionElms.forEach(opt => {
       let key = opt.parentElement.label;
       let val = opt.textContent;
       if (subjDict.has(key))
-     subjDict.get(key).push(val);
+      subjDict.get(key).push(val);
       else subjDict.set(key, [val]);
+      
+      if (!teachers[un].load[key].includes(val))
+    teachers[un].load[key].push(val);
+//alert(teachers[un].load[key]);
       
     })
     tBody.innerHTML = "";
       subjDict.forEach((val, key)=>{
-        teachers[un].load[key] = val;
         tBody.innerHTML +=`
           <tr>
                 <td>${key}</td>
