@@ -175,10 +175,12 @@
 }
 
 .menu-container hr {
-  border: 0;
-  height: 1px;
-  background:  #444;
+
   margin: 10px 0;
+  border: 0;
+  height: 4px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(200, 200, 200, 0.75), rgba(0, 0, 0, 0));
+
 }
 
 .menu-container ul {
@@ -232,6 +234,7 @@
     background: none;
     border: 0.5px solid white;
     border-radius: 4px;
+    border-bottom: none;
   }
 </style>
 
@@ -240,6 +243,7 @@
 <body>
       
   <header>
+    <hr>
     <button id="signout1">Logout</button>
     <button id="menu">&#9776;</button>
      <div class="menu-container">
@@ -254,6 +258,7 @@
      </div>
     <div id="sess">session/term not initialized</div>
     <div id="date"></div>
+    <hr>
   </header>
   <main>
   <h1>Admin  </h1>
@@ -323,11 +328,15 @@
       <a href="manageAdmins.html">Admin Settings</a>
       
     </div>
+      <div class="card">
+      <h2>Fees Management</h2>
+      <p>[Work in Progress (20%)]</p>
+    </div>
 
-    <!--div class="card">
+    <div class="card">
       <h2>Parents</h2>
       <p>(Coming soon)</p>
-    </div-->
+    </div>
 
   </div>
 </main>
