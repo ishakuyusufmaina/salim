@@ -344,6 +344,7 @@ button.delete:hover {
       let loadSelect = document.querySelector(`select[data-username="${username}"]`);
       loadSelect.onchange = e=>{
         console.log(e.target.value);
+        
       }
     }
   }
@@ -513,15 +514,16 @@ button.delete:hover {
     let tBody = inTable.querySelector("tbody");
     let un = subject.getAttribute("data-username");
     let optionElms = Array.from(subject.selectedOptions);
+    teachers[un].load = {};
+
     optionElms.forEach(opt => {
       let key = opt.parentElement.label;
       let val = opt.textContent;
       if (subjDict.has(key))
       subjDict.get(key).push(val);
       else subjDict.set(key, [val]);
-      
-      if (!teachers[un].load[key].includes(val))
-    teachers[un].load[key].push(val);
+      teachers[un].load[key] ??=[];
+      teachers[un].load[key].push(val);
 //alert(teachers[un].load[key]);
       
     })
