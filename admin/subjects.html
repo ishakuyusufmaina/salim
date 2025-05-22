@@ -219,7 +219,12 @@ button.delete:hover {
   saveBtn.onclick = async e=>{
     let set = setSelect.value;
     if (!set) return;
-    let subjs = Array.from(table.querySelectorAll(".subject")).map(inp=>inp.textContent);
+    let subjs = [];
+    Array.from(table.querySelectorAll(".subject")).forEach(inp=>{
+      let subj = inp.textContent.trim();
+      if (subj)
+      subjs.push(subj);
+    });
     console.log(subjs);
     set = set.toLowerCase();
     let sectionRef = doc(db, schoolId, "section");
