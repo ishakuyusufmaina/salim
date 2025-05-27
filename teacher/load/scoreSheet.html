@@ -182,8 +182,8 @@
    container.innerHTML = "";
    if (subjK) {
       
-     Object.keys(students).forEach((key, i)=>{
-       let student = students[key];
+     Object.values(students).sort((a, b)=>a.name.localeCompare(b.name)).forEach((student, i)=>{
+       //let student = students[key];
        student.subjects ??={};
        student.subjects[subjK] ??= [{}, {}, {}];
        student.subjects[subjK][termIndex].name ??= subj;
@@ -239,9 +239,9 @@
        let totalElm = document.getElementById("total"+ i);
        [testInp1, testInp2, testInp3, examInp].forEach(inp=> {
          inp.oninput = e=>{
-         let test1 = Number(testInp.value);
-         let test2 = Number(testInp.value);
-         let test3 = Number(testInp.value);
+         let test1 = Number(testInp1.value);
+         let test2 = Number(testInp2.value);
+         let test3 = Number(testInp3.value);
          let exam = Number(examInp.value);
          let total = test1 + test2 + test3 + exam;
          totalElm.innerHTML = total;
