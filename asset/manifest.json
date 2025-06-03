@@ -1,6 +1,6 @@
 {
   "name": "Salim Global Integrated Academy",
-  "short_name": "SGIA",
+  "short_name": "SALIM",
   "description": "An educational platform from Salim Global Integrated Academy, Maiduguri.",
   "start_url": "../signin.html",
   "display": "standalone",
