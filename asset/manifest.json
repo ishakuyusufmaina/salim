@@ -2,7 +2,7 @@
   "name": "Salim Global Integrated Academy",
   "short_name": "SGIA",
   "description": "An educational platform from Salim Global Integrated Academy, Maiduguri.",
-  "start_url": "/",
+  "start_url": "../signin.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0078D7",
