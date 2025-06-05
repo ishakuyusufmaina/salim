@@ -2,10 +2,11 @@
   "name": "Salim Global Integrated Academy",
   "short_name": "SALIM",
   "description": "An educational platform from Salim Global Integrated Academy, Maiduguri.",
-  "start_url": "../signin.html",
+  "start_url": "/signin.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0078D7",
+  "scope": "/",
   "icons": [
     {
       "src": "favicon-16x16.png",
