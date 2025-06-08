@@ -235,6 +235,7 @@
     border: 0.5px solid white;
     border-radius: 4px;
     border-bottom: none;
+    user-select: none;
   }
 </style>
 
@@ -244,7 +245,7 @@
       
   <header>
     <hr>
-    <button id="signout1">Logout</button>
+    <button id="signout1">SALIM GLOBAL INTEGRATED ACADEMY MAIDUGURI</button>
     <button id="menu">&#9776;</button>
      <div class="menu-container">
             <button id="close">X</button> Menu
@@ -476,7 +477,7 @@ adminFunctions.forEach(fx=>{
       return;
     }
     signout1.onclick = e=>{
-      signOut(auth);
+     // signOut(auth);
     }
     document.getElementById("switch").onclick = e=> {
       window.location.href = "../teacher/index.html";
