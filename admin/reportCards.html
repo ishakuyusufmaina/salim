@@ -184,7 +184,9 @@ let sectionRef = doc(db, schoolId, "section");
         
         console.log(JSON.stringify(subjects[subj]))
         try {
-          student.score += Number(subjects[subj][termIndex].test) + Number(subjects[subj][termIndex].exam);
+          let test1 = Number(subjects[subj][termIndex].test1 ?? 0);
+          let test2 = Number(subjects[subj][termIndex].test2 ?? 0)
+          student.score += test1 + test2 + Number(subjects[subj][termIndex].exam);
           subHeads.add(subjects[subj][termIndex].name);
           
         } catch(e) {
