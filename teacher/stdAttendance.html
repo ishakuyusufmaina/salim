@@ -231,6 +231,8 @@ let teachersRef = doc(db, schoolId, "teachers");
     }
   
   submitBtn.onclick = async e=>{
+    alert("Thank you");
+    return;
     let session = key(sessionElm.textContent);
     let clas = key(fmRole);
     let superAttendRef = doc(db, schoolId, session, clas, "attendance");
