@@ -320,6 +320,7 @@ async function  saveScores(){
     let session = key(ses.year + terms[ses.term]);
     if (!(clas && session)) return null;
    if (!students) return;
+  if (!Object.values(students)) return;
  
   
  let stdsRef = doc(db, schoolId, session, clas, "students");
