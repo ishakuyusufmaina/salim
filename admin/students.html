@@ -236,8 +236,10 @@ add.onclick = e=>{
       
     });
     if (!currentStudents) return;
-     await setDoc(stdsRef, currentStudents);
-    alert("save");
+    if (!Object.values(currentStudents)) return;
+    
+   await setDoc(stdsRef, currentStudents);
+   alert("save");
     console.log(JSON.stringify(students));
      
   }
