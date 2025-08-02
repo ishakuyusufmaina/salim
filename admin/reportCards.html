@@ -182,11 +182,12 @@ let sectionRef = doc(db, schoolId, "section");
       
       for (const subj in subjects) {
         
-        console.log(JSON.stringify(subjects[subj]))
+       // console.log(JSON.stringify(subjects[subj]))
         try {
           let test1 = Number(subjects[subj][termIndex].test1 ?? 0);
           let test2 = Number(subjects[subj][termIndex].test2 ?? 0)
-          student.score += test1 + test2 + Number(subjects[subj][termIndex].exam);
+          let test3 = Number(subjects[subj][termIndex].test3 ?? 0)          
+          student.score += test1 + test2 + test3 + Number(subjects[subj][termIndex].exam);
           subHeads.add(subjects[subj][termIndex].name);
           
         } catch(e) {
@@ -195,27 +196,54 @@ let sectionRef = doc(db, schoolId, "section");
       }
       stdList.push(student);
     })       
-    console.log(JSON.stringify(stdList));
+   // console.log(JSON.stringify(stdList));
     stdList.forEach(std=>{
       let reportCard = document.createElement("table");
       reportCard.innerHTML = `
       <caption>
-      <h2>${schoolName}</h2>
-      <img class="logo" src="../../logo.jpg">
-      <h3>Terminal Report</h3>
-      Name of Student: ${std.name} <br>
-      Sex: ${std.gender}<br>
-      Class: ${classSelect.value} <br>
-      Session: ${sessionSelect.value} <br>
-      <!--Term: ${"?"}<br-->
-      Number in Class: ${stdList.length} <br>
-      Position: ${std.position}
-     
+      <header>
+      <img class="logo" src="../logo.jpg">
+      <h2>${schoolName.toUpperCase()}</h2>
+      <address>
+      <span class="label">ADDRESS:</span> NO: 43 Behind Tudun Wada, Railway North, Shuwari 11, Bolori, Maiduguri, Borno State
+      <br>
+      <span class="label">Email: </span><i>salimglobal2017@gmail.com</i> <span class="label">Phone No: </span>080080559576, 08065379054
+      </address>
+      </header>
+      
+      <h3>TERMINAL REPORT</h3>
+      <table class="student-info-table">
+  <tr class="std-name">
+    
+    <td colspan="2">NAME OF PUPIL: ${std.name.toUpperCase()}</td>
+  </tr>
+  <tr>
+   
+    <td>GENDER: ${std.gender}</td>
+  
+    <td>CLASS: ${classSelect.value}</td>
+  </tr>
+  <tr>
+    
+    <td>SESSION: ${sessionSelect.value}</td>
+    
+    <td>RESUMPTION DATE: <strong><time>8<sup>th</sup> SEPTEMBER, 2025</time></strong></td>
+  </tr>
+  <tr>
+    
+    <td>NUMBER IN CLASS: ${students.length}</td>
+    
+    <td>POSITION: ${std.position}</td>
+  </tr>
+</table>   
       
       </caption>
-         <tr>
+         <tr class="rchead">
+          <th>S/N</th>
           <th>Subject</th>
-          <th>CA</th>
+          <th>1st CA</th>
+          <th>2st CA</th>
+          <th>3rd CA</th>
           <th>Exam</th>
           <th>Total</th>
           <th>Grade</th>
@@ -223,19 +251,26 @@ let sectionRef = doc(db, schoolId, "section");
         </tr>
       `;
       let subjects = std.subjects;
+      let sc=0;
       for (const subj in subjects) {
-        
+       sc++; 
       let t1= Number(subjects[subj][termIndex].test1 ?? 0);
       let t2 = Number(subjects[subj][termIndex].test2 ?? 0);
+      let t3 = Number(subjects[subj][termIndex].test3 ?? 0);
+       console.log(t3>0);
+
  //     subjects.forEach(subj=>{
         let row =document.createElement("tr");
         row.innerHTML = `
-        <td>${subjects[subj][termIndex].name}</td>
-        <td>${t1 + t2}</td>
+        <td>${sc}</td>
+        <td>${subjects[subj][termIndex].name.toUpperCase()}</td>
+        <td>${t1}</td>
+        <td>${t2}</td>
+        <td>${t3}</td>
         <td>${subjects[subj][termIndex].exam}</td>
-        <td>${t1 + t2 + Number(subjects[subj][termIndex].exam)}</td>
-        <td>${grade(t1+t2, Number(subjects[subj][termIndex].exam))}</td>
-        <td>${remark(t1+t2, Number(subjects[subj][termIndex].exam))}</td>
+        <td>${t1 + t2 + t3 + Number(subjects[subj][termIndex].exam)}</td>
+        <td>${grade(t1+t2+t3, Number(subjects[subj][termIndex].exam))}</td>
+        <td>${remark(t1+t2+t3, Number(subjects[subj][termIndex].exam))}</td>
         
         `;
         reportCard.appendChild(row);
@@ -245,6 +280,24 @@ let sectionRef = doc(db, schoolId, "section");
       wrapper.className = "table-container";
 wrapper.appendChild(reportCard);
 container.append(hr, wrapper);
+      let p = document.createElement("p");
+      p.innerHTML = `
+      TOTAL SCORE: ${std.score}<br>
+      AVERAGE SCORE: ${std.score/sc}
+      <br>
+      
+      HEAD TEACHER'S COMMENT: <strong class="comment">${remark(0, std.score/sc)}</strong>
+    <img id="stamp" src="stamp.png">
+      `;
+      wrapper.append(p);
+      p.classList.add("rfooter");
+      p = document.createElement("p");
+      p.innerHTML = `
+      Powered by <strong>mainafly.com</strong>
+      
+      `;
+      wrapper.append(p);
+      p.classList.add("powered");
     });
     
     function remark(test, exam){
@@ -290,18 +343,104 @@ container.append(hr, wrapper);
   </script>
   
 <style>
+  
+    h2{
+    color: #0078D7;
+  }
+  
+  .rchead {
+ //   background-color: #0078D7;
+  //  color: white;
+    text-transform: uppercase;
+  }
+  .label {
+    color: coral;
+    font-weight: bolder;
+  }
+ 
+  /* Apply handwriting font to a class or the body */
+.comment {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.5rem; /* adjust as needed */
+  line-height: 1.5;
+}
+     .student-info-table * {
+     border: none;
+     }
+  .student-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+}
+
+  
+.student-info-table th {
+//  background-color: #f9f9f9;
+  width: 20%;
+}
+
+.student-info-table td {
+  width: 30%;
+  text-align: left;
+}
+
+     .student-info-table.std-name {
+    
+      border-top: 1px solid #0078D7;
+       border-top-radius: 25px;
+   }
+.std-name,  .std-name > th{
+    background: white;
+    color: black;
+    
+  }
+
+  .std-name>td {
+    border-bottom: 1px solid #0078D7;
+    background-color: white;
+    color:black;
+    font-weight: bolder;
+    text-align: center;
+        
+  }
+    
+
+
+
+  
+  .rfooter {
+     border-bottom: 1px solid #0078D7;
+  }
+  .powered {
+    postion: absolute;
+    bottom: 0px;
+    color: indianred;
+    text-align: right;
+    font-size: 12px;
+    right: 0;
+    font-style: italic;
+  }
+  *{
+    box-sizing: border-box;
+  }
  table {
   border-collapse: collapse;
   width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+   
 }
 
  th,
 td {
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 12px;
   text-align: center;
+}
+
+  table td:first-child,
+table th:first-child {
+ 
 }
 
 .vertical-header-table .thead th.subject {
@@ -335,14 +474,14 @@ td {
 }
 
   body {
-      background-color: #121212;
-      color: #ffffff;
+    //  background-color: #121212;
+  //    color: #ffffff;
       font-family: Arial, sans-serif;
-      padding: 20px;
+      padding: 14px;
     }
   select {
-    background-color: #121212;
-      color: #ffffff;
+ //   background-color: #121212;
+   //   color: #ffffff;
       font-family: Arial, sans-serif;
   }
   
@@ -363,12 +502,12 @@ td {
     table {
       width: fit-content;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-top: 12px;
     }
 
     th, td{
       padding: 4px;
-      border: 1px solid #333;
+      border: 1px solid #007dbb;
       text-align: center;
     }
  h1, .save-container {
@@ -381,18 +520,19 @@ text-align: center;
    .select-container, .table-container {
     text-align: center;
     margin: auto;
-    padding: 10px;
+    padding: 9px;
     //border: 1px solid white;
     width: 100%;
     overflow-x: auto;
+     position: relative;
   }
  
  
  select {
-    background-color: #121212;
-      color: #ffffff;
+  //  background-color: #121212;
+ //     color: #ffffff;
       font-family: Arial, sans-serif;
-      border: none;
+   //   border: none;
     font-size: 24px;
     text-align: center;
     width: 100%;
@@ -406,19 +546,72 @@ text-align: center;
 }
   
   .logo {
-    border-radius: 50%;
+   // border-radius: 50%;
     height: 100px;
     width:100px;
+  position: relative;
+   
+    z-index: 100;
+    
+    float: left;
+    
   }
+  
+    #stamp {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+  position: absolute;
+   bottom: 10px;
+   right:100px;
+    z-index: 100;
+    
+    
+  }
+  #logo-container {
+   // height: 120px;
+ //   width: 100%;
+   // border-bottom: 1px solid black;
+    position: relative;
+  }
+  
+  #top-hl, #bottom-hl {
+    border: 8px solid #007dbb;
+    position: absolute;
+    width: calc(100% - 22px);
+    left: 0;
+    bottom: 40px;
+    z-index: 1;
+    height: 0;
+  }
+  #p{
+    position: absolute;
+    bottom: 60px;
+    right: 30px;
+    text-align: left;
+    font-size: 10px;
+    
+  }
+  
+  #bottom-hl {
+ 
+    position: absolute;
+    width: calc(100% - 22px);
+    left: 0;
+    bottom: 20px;
+  }
+  
   tr:nth-child(1) {
-    padding: 0.7rem;
-      background-color: #3f51b5;
-      color: #fff;
+   // padding: 0.7rem;
+     // background-color: #007dbb;
+    //  color: #fff;
       border: none;
       border-radius: 5px;
       font-size: 1rem;
   }
-
+.table-container {
+  border: 2px solid #0078D7;
+}
   @media print {
     hr {
       page-break-after: always;
@@ -426,15 +619,61 @@ text-align: center;
     .no-print {
       display: none;
     }
-    .table-container, .table-container > *{
+   table, .table-container, .table-container > *{
       margin: auto;
     }
-    .table-container > * {}
+    
+    .table-container > * {
+    //  color: black;
+      //text-transform: uppercase;
+    }
 
     .logo {
       border-radius: 0%;
     }
+     
+    .stamp {
+    
+  
+      
+    
+    
   }
+
+    
+    
+    table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table th, table td {
+  padding: 6px;
+  text-align: left;
+  
+//border: 1px solid #ccc;
+}
+
+table tr:nth-child(even) {
+  //background-color: #f2f2f2;
+}
+
+table tr:nth-child(odd) {
+ // background-color: #ffffff;
+}
+    table td {
+  white-space: nowrap;
+      word-break: keep-all;
+    }
+
+  }
+
+  .n, .c {
+    display: none;
+  }
+ 
+  
+
   </style>
 </body>
 </html>
